@@ -1,0 +1,29 @@
+.thumbnail img{
+    max-height: 150px;
+    margin-top: 15px;
+    margin-left: 100px;
+}
+
+.thumbnail .game-name{
+    margin-top: 10px;
+    margin-left: 120px; 
+    font-weight: bold; 
+}
+
+.thumbnail .description{
+    color: #444444; 
+    margin-left: 15px;
+    margin-right: 5px;
+}
+
+.price{
+    font-weight: bold;
+    font-size: 18px;
+    margin-left: 15px;
+}
+
+.clearfix .btn-primary{ 
+    float: right;
+    margin-right: 15px;
+    margin-bottom: 15px;
+}
