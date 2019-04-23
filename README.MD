@@ -1,0 +1,1 @@
+## This repository holds the source code of my shopping cart build with NodeJS/Express/MongoDB
