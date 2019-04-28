@@ -34,7 +34,7 @@ app.use(session(
   {secret: 'mysupersecret',
    resave: false,
    saveUninitialized: false,
-   store: new MongoStore({mongooseConnection: mongoose.Connection}),
+   store: new MongoStore({mongooseConnection: mongoose.connection}),
    cookie: {maxAge: 180 * 60 * 1000} //session duration time
 }));
 app.use(express.static(path.join(__dirname, 'public')));
