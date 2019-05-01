@@ -6,7 +6,8 @@
 
 .thumbnail .game-name{
     margin-top: 10px;
-    margin-left: 120px; 
+    font-size: 20px;
+    margin-left: 90px; 
     font-weight: bold; 
 }
 
@@ -26,6 +27,7 @@
     float: right;
     margin-right: 15px;
     margin-bottom: 15px;
+    color:white;
 }
 
 
