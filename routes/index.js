@@ -121,51 +121,6 @@ router.post('/checkout', isLoggedIn, function (req, res, next) {
   });
 });
 
-/*router.post('/update', isLoggedIn, function(req, res, next){
-  if (!req.session.cart) {
-    return res.redirect('/shopping-cart');
-  }
-
-  var cart = new Cart(req.session.cart);
-
-  const stripe = require("stripe")("sk_test_btjNjgaPmmvu3rGPQnWL64gn00iZIpy4tD");
-
-  stripe.charges.create({
-    amount: cart.totalPrice * 100,
-    currency: "usd",
-    source: req.body.stripeToken, // obtained with Stripe.js
-    description: "Test Charge"
-  }, function (err, charge) {
-    // asynchronously called
-    if (err) {
-      req.flash('error', err.message);
-      return res.redirect('/checkout');
-    }
-
-    var order = new Order({
-      user: req.user,
-      cart: cart,
-      address: req.body.address,
-      name: req.body.name,
-      paymentId: charge.id
-    });
-
-    var paymentId = charge.id;
-
-    mongo.connect(url, function(err, db){
-      assert.equal(null, err);
-      db.collection('orders').updateOne({"_id": ObjectID(paymentId)}, {$set: order}, function(err, result){
-        assert.equal(null, err);
-        console.log('Item updated');
-        db.close;
-      });
-    });
-
-
-  });
-});*/
-
-
 module.exports = router;
 
 function isLoggedIn(req, res, next) { //verify if the user is logged

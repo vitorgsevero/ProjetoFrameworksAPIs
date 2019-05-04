@@ -8,16 +8,15 @@
             <div class="panel-body">
                 <ul class="list-group">
                     {{# each this.items}}
-                    <li class="list-group-item"><span class="badge">{{ this.price}}</span>{{this.item.title}} |
+                    <li class="list-group-item"><span class="badge">R${{ this.price}}</span>{{this.item.title}} |
                         {{this.qty}} Units </li>
                     {{/each}}
                 </ul>
             </div>
             <div class="panel-footer">
                 <strong>
+                    Buyer's name: {{this.name}} <br>
                     Total Price: R${{ this.cart.totalPrice }}
-                    Id: {{this._id}}
-                    Name: {{this.name}}
                 </strong>
             </div>
         </div>

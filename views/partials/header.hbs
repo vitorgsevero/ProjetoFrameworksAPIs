@@ -28,15 +28,15 @@
                     <ul class="dropdown-menu">
 
                         {{# if login }}
-                        <li><a href="/user/data">User Data</a></li>
-                        <li><a href="/user/profile">My Orders</a></li>
+                        <li><a href="/user/data"></i><i class="fas fa-user-cog" aria-hidden="true"></i> User Data</a></li>
+                        <li><a href="/user/profile"></i> <i class="fas fa-handshake" aria-hidden="true"></i> My Orders</a></li>
                         <li role="separator" class="divider"></li>
-                        <li><a href="/user/logout">Logout</a></li>
+                        <li><a href="/user/logout"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
 
                         {{else}}
-                        <li><a href="/user/signup">Sign Up</a></li>
+                        <li><a href="/user/signup"><i class="fas fa-user-plus"></i> Sign Up</a></li>
                         <li role="separator" class="divider"></li>
-                        <li><a href="/user/signin">Sign In</a></li>
+                        <li><a href="/user/signin"><i class="fas fa-user-lock"></i> Sign In</a></li>
                         {{/if}}
 
                     </ul>
