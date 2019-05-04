@@ -34,6 +34,19 @@ router.get('/data', isLoggedIn, function (req, res) {
     });
  });
 
+ router.get('/update-data/', isLoggedIn, function(req, res){
+    User.find({user: req.user}, function(err){
+        if(err){
+            return res.write('Error detected!');
+        }
+
+        var id = req.params.id;
+
+   
+        res.render('user/update-data', {title: 'Update User Data', email: req.user.email, password: req.user.password});
+       });
+ });
+
 
 router.get('/logout', isLoggedIn, function (req, res) {
     req.logout();

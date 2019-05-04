@@ -30,4 +30,16 @@
     color:white;
 }
 
+ 
+.btn-warning{
+    margin-left: 5px;
+} 
 
+.btn-danger{
+    margin-left: 5px;
+}
+
+.btn-group{
+    margin-left: 60%;
+
+}
