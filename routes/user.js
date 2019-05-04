@@ -25,20 +25,10 @@ router.get('/profile', isLoggedIn, function (req, res) {
 });
 
 router.get('/data', isLoggedIn, function (req, res) {
-    User.find({user: req.user}, function(err, users){
+    User.find({user: req.user}, function(err){
      if(err){
          return res.write('Error detected!');
      }
-
-    var aux_user = req.user;
-
-     console.log(aux_user);
-
-     var email = req.user.email;
-     var password = req.user.password;
-
-     console.log("Email: ", email);
-     console.log("Password: ", password);     
 
      res.render('user/data', {title: 'User Data', email: req.user.email, password: req.user.password});
     });
