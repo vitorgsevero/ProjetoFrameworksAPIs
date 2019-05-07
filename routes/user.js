@@ -10,42 +10,60 @@ var csrfProtection = csrf();
 router.use(csrfProtection);
 
 router.get('/profile', isLoggedIn, function (req, res) {
-    Order.find({user: req.user}, function(err, orders){
-        if(err){
+    Order.find({ user: req.user }, function (err, orders) {
+        if (err) {
             return res.write('Error!');
         }
         var cart;
-        orders.forEach(function(order){
+        orders.forEach(function (order) {
             cart = new Cart(order.cart);
             order.items = cart.generateArray();
         });
 
-        res.render('user/profile', {title: 'My Orders', orders: orders});
+        res.render('user/profile', { title: 'My Orders', orders: orders });
     });
 });
 
 router.get('/data', isLoggedIn, function (req, res) {
-    User.find({user: req.user}, function(err){
-     if(err){
-         return res.write('Error detected!');
-     }
-
-     res.render('user/data', {title: 'User Data', email: req.user.email, password: req.user.password});
-    });
- });
-
- router.get('/update-data/', isLoggedIn, function(req, res){
-    User.find({user: req.user}, function(err){
-        if(err){
+    User.find({ user: req.user }, function (err) {
+        if (err) {
             return res.write('Error detected!');
         }
 
-        var id = req.params.id;
+        res.render('user/data', { title: 'User Data', email: req.user.email, password: req.user.password });
+    });
+});
 
-   
-        res.render('user/update-data', {title: 'Update User Data', email: req.user.email, password: req.user.password});
-       });
- });
+router.get('/update-data/', isLoggedIn, function (req, res) {
+    User.find({ user: req.user }, function (err) {
+        if (err) {
+            return res.write('Error detected!');
+        }
+        res.render('user/update-data', { title: 'Update User Data', email: req.user.email, password: req.user.password });
+    });
+});
+
+
+router.post('/update-data/:id', isLoggedIn, function (req, res) {
+
+    console.log('OPa');
+    var id = req.params.id;
+    var newEmail = req.body.email;
+    var newPassword = req.body.password;
+
+    db.collection('users').updateOne({ _id: ObjectId(id) }, {
+        $set: {
+            email: newEmail,
+            password: newPassword
+        }
+    }, (err, result) => {
+        if (err) {
+            return res.send(err);
+        }
+        res.redirect('user/data');
+        console.log('Atualizado no Banco de Dados');
+    });
+});
 
 
 router.get('/logout', isLoggedIn, function (req, res) {
@@ -55,7 +73,7 @@ router.get('/logout', isLoggedIn, function (req, res) {
 
 router.use('/', notLoggedIn, function (req, res, next) {
     next();
-})
+});
 
 router.get('/signup', function (req, res, next) {
     var messages = req.flash('error');
