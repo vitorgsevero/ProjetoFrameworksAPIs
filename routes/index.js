@@ -1,11 +1,6 @@
 var express = require('express');
 var router = express.Router();
 var Cart = require('../models/cart');
-var ObjectID = require('mongodb').ObjectID;
-var mongo = require('mongodb').MongoClient;
-var assert = require('assert');
-
-var url = 'mongodb://localhost:27017/shopping';
 
 var Product = require('../models/product');
 var Order = require('../models/order');
