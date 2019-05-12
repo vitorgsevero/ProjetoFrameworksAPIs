@@ -6,24 +6,14 @@ var Order = require('../models/order');
 var Cart = require('../models/cart');
 var User = require('../models/user');
 var mongoose = require('mongoose');
-// var bodyParser = require('body-parser');
-// var app = express();
-var idMongo = require('mongodb').ObjectID;
-// const uri = 'mongodb://localhost:27017/shopping';
+var ObjectID = require('mongodb').ObjectID;
+var test = require('assert');
 
-// app.use(bodyParser.urlencoded({ extended: true }))
+var ObjectId = new ObjectID();
+test.equal(24, ObjectId.toHexString().length);
 
 var csrfProtection = csrf();
 router.use(csrfProtection);
-
-// var db = mongoose.Collection('users');
-// var aux = db;
-
-// MongoClient.connect(uri, (err, client) => {
-//     if (err) return console.log(err)
-//     db = client.db('shopping') // coloque o nome do seu DB
-
-//   })
 
 router.get('/profile', isLoggedIn, function (req, res) {
     Order.find({ user: req.user }, function (err, orders) {
@@ -59,7 +49,6 @@ router.get('/update-data', isLoggedIn, function (req, res) {
             return res.write('Error')
         }
 
-        console.log('KDFASKJDNJKASNDFJASNJDFASJDNJSAN')
         res.render('user/update-data', { csrfToken: req.csrfToken(), title: 'Update User Data', email: userEmail, password: userPassword })
     })
 })
@@ -70,7 +59,6 @@ router.post('/update-data/:id', isLoggedIn, function (req, res) {
     var newPassword = req.body.password;
     var id = req.params.id;
 
-    // console.log('KDFASKJDNJKASNDFJASNJDFASJDNJSAN');
     console.log(newEmail);
     console.log(newPassword);
 
@@ -89,36 +77,6 @@ router.post('/update-data/:id', isLoggedIn, function (req, res) {
 });
 
 
-// var db = MongoClient.client.db('shopping');
-
-// const updates = {
-//         email: newEmail,
-//         password: newPassword
-//     };
-
-// User.find({ user: req.user }, function (err) {
-//     if (err) {
-//         return res.write('Error');
-//     }
-
-// User.updateOne(
-//         {
-//             email: newEmail,
-//             password: newPassword      
-//         }
-//     );
-
-
-// User.findByIdAndUpdate(_id, updates, function (err, result) {
-//     if (err){
-//         return res.send(err);
-//     } 
-//     res.render('user/data', { title: 'User Data', email: newEmail, password: newPassword });
-// })
-// res.send('Done!');
-// });
-
-
 router.get('/update-order/', isLoggedIn, function (req, res) {
 
     Order.find({ user: req.user }, function (err, orders) {
@@ -132,16 +90,16 @@ router.get('/update-order/', isLoggedIn, function (req, res) {
 });
 
 
-router.get('/delete-data/:id', function (req, res) {
+router.get('/delete-data/', isLoggedIn, function (req, res) {
     var id = req.params.id;
-    var email = req.body.email;
 
     var userSchema = new mongoose.Schema({
         email: { type: String, required: true },
         password: { type: String, required: true }
     });
 
-
+    var ObjectId = userSchema.ObjectId;
+    var newObj = mongoose.Types.ObjectId(ObjectId);
     var db = mongoose.model('users', userSchema);
 
     // mongoose.model('users', userSchema).find(function (err, users) {
@@ -153,8 +111,9 @@ router.get('/delete-data/:id', function (req, res) {
     //     res.redirect('/');
     // });
 
-    db.deleteOne({email: email}, function(){
-        console.log('opa deu certo hein');
+    console.log('objoijffasj', newObj);
+
+    db.deleteOne({ _id: id}, function () {
         res.redirect('/');
     });
 
