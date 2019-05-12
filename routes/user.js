@@ -5,16 +5,24 @@ var passport = require('passport');
 var Order = require('../models/order');
 var Cart = require('../models/cart');
 var User = require('../models/user');
-var App = require('../app');
+var mongoose = require('mongoose');
+// var bodyParser = require('body-parser');
+// var app = express();
 var idMongo = require('mongodb').ObjectID;
-var MongoClient = require('mongodb').MongoClient;
+// const uri = 'mongodb://localhost:27017/shopping';
+
+// app.use(bodyParser.urlencoded({ extended: true }))
 
 var csrfProtection = csrf();
 router.use(csrfProtection);
 
-// MongoClient.connect(url, (err, client) => {
+// var db = mongoose.Collection('users');
+// var aux = db;
+
+// MongoClient.connect(uri, (err, client) => {
 //     if (err) return console.log(err)
-//     db = client.db('shopping')
+//     db = client.db('shopping') // coloque o nome do seu DB
+
 //   })
 
 router.get('/profile', isLoggedIn, function (req, res) {
@@ -42,48 +50,123 @@ router.get('/data', isLoggedIn, function (req, res) {
     });
 });
 
-// router.get('/update-data/', isLoggedIn, function (req, res) {
-//     User.find({ user: req.user }, function (err) {
-//         if (err) {
-//             return res.write('Error detected!');
-//         }
-//         res.render('user/update-data', { title: 'Update User Data', email: req.user.email, password: req.user.password });
-//     });
-// });
-
-
-router.get('/update-data/', isLoggedIn, function (req, res) {
+router.get('/update-data', isLoggedIn, function (req, res) {
     var userEmail = req.user.email;
     var userPassword = req.user.password;
 
-    // var string = ObjectID.toString();
-
     User.find({ user: req.user }, function (err) {
         if (err) {
-            return res.write('Error');
+            return res.write('Error')
         }
-        console.log(idMongo);
-    
-        res.render('user/update-data', { title: 'Update User Data', email: userEmail, password: userPassword});
+
+        console.log('KDFASKJDNJKASNDFJASNJDFASJDNJSAN')
+        res.render('user/update-data', { csrfToken: req.csrfToken(), title: 'Update User Data', email: userEmail, password: userPassword })
+    })
+})
+
+router.post('/update-data/:id', isLoggedIn, function (req, res) {
+
+    var newEmail = req.body.email;
+    var newPassword = req.body.password;
+    var id = req.params.id;
+
+    // console.log('KDFASKJDNJKASNDFJASNJDFASJDNJSAN');
+    console.log(newEmail);
+    console.log(newPassword);
+
+    User.updateOne({ _id: ObjectId(id) }, {
+        $set: {
+            email: newEmail,
+            password: newPassword
+        }
+    }, function (err) {
+        if (err) {
+            return res.send(err);
+        }
+        res.redirect('/');
+        console('TUDO OK');
     });
 });
 
-router.post('/update-data/:id', function (req, res) {
-    var newEmail = req.body.email;
-    var newPassword = req.body.password;
 
-    const updates = {
-            email: newEmail,
-            password: newPassword
-        };
+// var db = MongoClient.client.db('shopping');
 
-    User.findByIdAndUpdate(req.params.id, updates, function (err, result) {
-        if (err){
-            return res.send(err);
-        } 
-        res.render('user/data', { title: 'User Data', email: newEmail, password: newPassword });
-    })
-    res.send('Done!');
+// const updates = {
+//         email: newEmail,
+//         password: newPassword
+//     };
+
+// User.find({ user: req.user }, function (err) {
+//     if (err) {
+//         return res.write('Error');
+//     }
+
+// User.updateOne(
+//         {
+//             email: newEmail,
+//             password: newPassword      
+//         }
+//     );
+
+
+// User.findByIdAndUpdate(_id, updates, function (err, result) {
+//     if (err){
+//         return res.send(err);
+//     } 
+//     res.render('user/data', { title: 'User Data', email: newEmail, password: newPassword });
+// })
+// res.send('Done!');
+// });
+
+
+router.get('/update-order/', isLoggedIn, function (req, res) {
+
+    Order.find({ user: req.user }, function (err, orders) {
+        if (err) {
+            return res.write('Error');
+        }
+
+        res.render('user/update-order', { title: 'Update User Order', orders: orders });
+
+    });
+});
+
+
+router.get('/delete-data/:id', function (req, res) {
+    var id = req.params.id;
+    var email = req.body.email;
+
+    var userSchema = new mongoose.Schema({
+        email: { type: String, required: true },
+        password: { type: String, required: true }
+    });
+
+
+    var db = mongoose.model('users', userSchema);
+
+    // mongoose.model('users', userSchema).find(function (err, users) {
+    //     res.send(users);
+    // });
+
+    // mongoose.model('users', userSchema).findByIdAndDelete({_id: idMongo}, function(req, res){
+    //     console.log(idMongo);
+    //     res.redirect('/');
+    // });
+
+    db.deleteOne({email: email}, function(){
+        console.log('opa deu certo hein');
+        res.redirect('/');
+    });
+
+
+    // aux.deleteOne({_id: idMongo(id)}, function(err){
+    //     if(err){
+    //         return res.send(500, err);
+    //     }
+    //     console.log('Deletado do BD');
+    //     res.redirect('/');
+    // });
+
 });
 
 router.get('/logout', isLoggedIn, function (req, res) {

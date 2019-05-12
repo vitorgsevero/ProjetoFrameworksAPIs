@@ -10,7 +10,7 @@
     <h2>Update Data</h2>
 
    
-    <form action="/update-data/{{_id}}" method="POST">
+    <form action="/user/update-data/{{_id}}" method="POST">
     <div class="form-group">
         <label for="email">E-mail</label>
         <input type="text" id="email" value="{{email}}" name="email" class="form-control">
@@ -21,7 +21,9 @@
         <input type="text" id="password" name="password" value="{{password}}" class="form-control">
         <br />
     </div>
-    <a href="/user/update-data/{{_id}}" class="btn btn-primary" role="button">Save changes</a>
+     <input type="hidden" name="_csrf" value="{{ csrfToken }}">
+    <button class="btn btn-primary" type="submit">Save changes</button>
+    {{!-- <a href="/user/data/" class="btn btn-primary" role="button" type="submit">Save changes</a> --}}
     </form>
 
 
